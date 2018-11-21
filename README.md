@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/zstate/crawler.svg?branch=master)](https://travis-ci.org/zstate/crawler)
-[![Coverage Status](https://coveralls.io/repos/github/zstate/crawler/badge.svg)](https://coveralls.io/github/zstate/crawler)
+[![Build Status](https://travis-ci.org/crawlzone/crawlzone.svg?branch=master)](https://travis-ci.org/crawlzone/crawlzone)
+[![Coverage Status](https://coveralls.io/repos/github/crawlzone/crawlzone/badge.svg?branch=master)](https://coveralls.io/github/crawlzone/crawlzone?branch=master)
 
 # Overview
 
