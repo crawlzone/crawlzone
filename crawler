@@ -1,0 +1,31 @@
+#!/usr/bin/env php
+<?php
+
+use Symfony\Component\Console\Application;
+use Crawlzone\Console\Command\StartCommand;
+use Crawlzone\Console\Command\InitCommand;
+
+foreach (array(__DIR__.'/../../autoload.php', __DIR__.'/vendor/autoload.php') as $file) {
+    if (file_exists($file)) {
+        define('COMPOSER_INSTALL', $file);
+        break;
+    }
+}
+
+unset($file);
+
+if (!defined('COMPOSER_INSTALL')) {
+    echo 'You need to set up the project dependencies using the following commands:' . PHP_EOL.
+        'wget http://getcomposer.org/composer.phar' . PHP_EOL.
+        'php composer.phar install' . PHP_EOL;
+    die(1);
+}
+
+require COMPOSER_INSTALL;
+
+$application = new Application;
+
+$application->add(new InitCommand);
+$application->add(new StartCommand);
+
+$application->run();

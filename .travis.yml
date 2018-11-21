@@ -1,0 +1,10 @@
+sudo: required
+
+services:
+  - docker
+
+script:
+  - make up composer-istall test
+
+after_success:
+  - make coveralls

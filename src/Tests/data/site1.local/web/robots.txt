@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /deny
+Allow: /deny/this-is-allowed.html

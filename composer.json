@@ -1,0 +1,43 @@
+{
+    "name": "crawlzone",
+    "description":  "Crawlzone is a fast asynchronous internet crawling framework aiming to provide open source web search and testing solution. It can be used for a wide range of purposes, from extracting and indexing structured data to monitoring and automated testing.",
+    "type": "library",
+    "keywords": ["framework", "crawler", "crawling", "web-scraping ", "automated-testing ", "web-search "],
+    "homepage": "https://github.com/crawlzone/crawlzone",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Egor Zubkevich",
+            "email": "zstate@gmail.com",
+            "homepage": "https://github.com/zstate"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "guzzlehttp/guzzle": "^6.0",
+        "symfony/console": "^4.0",
+        "symfony/config": "^4.0",
+        "symfony/dom-crawler": "^4.0",
+        "psr/log": "^1.0",
+        "symfony/event-dispatcher": "^4.0",
+        "webignition/robots-txt-file": "^2.1",
+        "symfony/yaml": "^4.0",
+        "symfony/process": "^4.1"
+    },
+
+    "require-dev": {
+        "phpunit/phpunit": "^7.0",
+        "php-coveralls/php-coveralls": "^2.0"
+    },
+
+    "autoload": {
+        "files": ["src/functions.php"],
+        "psr-4": {"Crawlzone\\": "src/"}
+    },
+    "bin": [
+        "crawler"
+    ],
+    "config": {
+        "bin-dir": "bin"
+    }
+}

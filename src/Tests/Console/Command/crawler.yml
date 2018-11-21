@@ -1,0 +1,5 @@
+start_uri:
+ - http://site1.local
+ - http://site1.local/page-with-link-to-500-error.html
+concurrency: 10
+save_progress_in: memory

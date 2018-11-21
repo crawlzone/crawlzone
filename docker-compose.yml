@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  site1.local:
+    image: webdevops/php-apache-dev:7.1
+    ports:
+      - "8880:80"
+    volumes:
+      - ./src/Tests/data/site1.local/web/:/app/
+      - .:/application:cached
+    working_dir: /application
+
+  site2.local:
+    image: webdevops/php-apache-dev:7.1
+    ports:
+      - "8881:80"
+    volumes:
+      - ./src/Tests/data/site2.local/web/:/app/
