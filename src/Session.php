@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Crawlzone;
 
 use Crawlzone\Http\HttpClient;
+use GuzzleHttp\Promise\PromiseInterface;
+use Psr\Http\Message\RequestInterface;
 
 
 /**
@@ -31,5 +33,14 @@ class Session
     public function getHttpClient(): HttpClient
     {
         return $this->httpClient;
+    }
+
+    /**
+     * @param RequestInterface $request
+     * @return PromiseInterface
+     */
+    public function sendAsync(RequestInterface $request): PromiseInterface
+    {
+        return $this->httpClient->sendAsync($request);
     }
 }
