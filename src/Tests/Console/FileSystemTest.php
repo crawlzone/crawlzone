@@ -11,7 +11,7 @@ class FileSystemTest extends TestCase
     {
         $fileSystem = new FileSystem;
 
-        $content = $fileSystem->fileGetContent(__DIR__ . "/../data/site2.local/web/robots.txt");
+        $content = $fileSystem->fileGetContent(__DIR__ . "/../data/site1.local/web/robots.txt");
 
         $this->assertContains("User-agent: *", $content);
         $this->assertContains("Disallow: /", $content);
