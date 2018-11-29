@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zubkevich
- * Date: 5/16/18
- * Time: 4:49 PM
- */
-
 namespace Crawlzone\Tests;
 
 use PHPUnit\Framework\TestCase;
@@ -36,7 +29,10 @@ class RobotsTxtObeyTest extends TestCase
 
         $expected = [
             'GET http://site1.local/robotstxt.html',
-            'GET http://site1.local/deny/this-is-allowed.html'
+            'GET http://site1.local/deny/this-is-allowed.html',
+            'GET http://site2.local/',
+            'GET http://site2.local/service.html',
+            'GET http://site2.local/contacts.html'
         ];
 
         $this->assertEquals($expected, $history->getHistory());

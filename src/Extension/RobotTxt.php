@@ -55,7 +55,8 @@ class RobotTxt extends Extension
         $robotTxtContent = "";
         if (empty($this->cache[$robotTxtUri])) {
             // Getting content of the robots.txt file
-            $robotTxtResponse = $this->client->request('GET', $robotTxtUri);
+            // Disable throwing exceptions on an HTTP protocol errors to check if the file exists
+            $robotTxtResponse = $this->client->request('GET', $robotTxtUri, ['http_errors' => false]);
 
             // Robots.txt file exists
             if ($robotTxtResponse->getStatusCode() === 200) {
@@ -64,6 +65,9 @@ class RobotTxt extends Extension
                 // Store the content of the robots.txt in the cache
                 $this->cache[$robotTxtUri] = $robotTxtContent;
             }
+
+
+
         } else {
             $robotTxtContent = $this->cache[$robotTxtUri];
         }
