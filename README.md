@@ -17,6 +17,10 @@ It can be used for a wide range of purposes, from extracting and indexing struct
 - Easy to extend the core by hooking into the crawling process using events.
 - Shut down crawler any time and start over without losing the progress.
 
+## Architecture
+
+[![Architecture](https://github.com/crawlzone/crawlzone/blob/master/resources/Web%20Crawler%20Architecture.svg)
+
 ## Quick Start
 ```php
 <?php
