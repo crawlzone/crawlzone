@@ -19,7 +19,7 @@ It can be used for a wide range of purposes, from extracting and indexing struct
 
 ## Architecture
 
-[![Architecture](https://github.com/crawlzone/crawlzone/blob/master/resources/Web%20Crawler%20Architecture.svg)
+![Architecture](https://github.com/crawlzone/crawlzone/blob/master/resources/Web%20Crawler%20Architecture.svg)
 
 ## Quick Start
 ```php
