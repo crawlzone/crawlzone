@@ -12,7 +12,7 @@ use Crawlzone\AbsoluteUri;
 
 class RobotsTxtPolicy implements UriPolicy
 {
-    private const USER_AGENT = 'zstate/crawler';
+    private const USER_AGENT = 'crawlzone';
 
     /**
      * @var string
