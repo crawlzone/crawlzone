@@ -3,8 +3,7 @@
 
 # Overview
 
-Crawlzone is a fast asynchronous internet crawling framework aiming to provide open source web search and testing solution.
-It can be used for a wide range of purposes, from extracting and indexing structured data to monitoring and automated testing.
+Crawlzone is a fast asynchronous internet crawling framework aiming to provide open source web scraping and testing solution. It can be used for a wide range of purposes, from extracting and indexing structured data to monitoring and automated testing.
 
 ## Key Features
 
@@ -16,6 +15,25 @@ It can be used for a wide range of purposes, from extracting and indexing struct
 - Ability to set crawling depth
 - Easy to extend the core by hooking into the crawling process using events.
 - Shut down crawler any time and start over without losing the progress.
+
+## Architecture
+
+![Architecture](https://github.com/crawlzone/crawlzone/blob/master/resources/Web%20Crawler%20Architecture.svg)
+
+Here is what's happening for a single request when you run the client:
+
+1. The client queues the initial request (start_uri).
+2. The engine looks at the queue and checks if there are any requests.
+3. The engine gets the request from the queue and emits the `BeforeRequestSent` event. If the depth option is set in the config, then the `RequestDepth` extension validates the depth of the request. If the obey robots.txt option is set in the config, then the `RobotTxt` extension checks if the request complies with the rules. In a case when the request doesn't comply, the engine emits the `RequestFailed` event and gets the next request from the queue.
+4. The engine uses the request middleware stack to pass the request through it.
+5. The engine sends an asynchronous request using Guzzle HTTP Client
+6. The engine emits the `AfterRequestSent` event and stores the request in the history to avoid crawling the same request again.
+7. When response headers are received, but the body has not yet begun to download, the engine emits the `ResponseHeadersReceived` event.
+8. The engine emits the `TransferStatisticReceived` event. If the autothrottle option is set in the config, then the `AutoThrottle` extension is executed.
+9. The engine uses the response middleware stack to pass the response through it.
+10. The engine emits the `ResponseReceived` event. Additionally, if the request status code is greater than or equal to 400, the engine emits `RequestFailed` event.
+11. The `ResponseReceived` triggers the `ExtractAndQueueLinks` extension, which extracts and queues the links. The process starts over until the queue is empty.
+
 
 ## Quick Start
 ```php
