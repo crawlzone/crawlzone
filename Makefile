@@ -1,4 +1,10 @@
+.PHONY: down build up ssh composer-istall composer-update test-php7.3 test-php7.2 test-php7.1 test coveralls run-script site1 site2
+
 RUN_COMMAND=docker-compose run --rm site1.local
+
+RUN_TESTS=docker run --rm --interactive --tty --network crawlzone_default -v `pwd`:/application
+
+PHPUNIT_COMMAND=/application/bin/phpunit -c /application/phpunit.xml.dist $(PHPUNIT_FLAGS)
 
 PHPUNIT_FLAGS=
 
@@ -28,8 +34,16 @@ composer-istall:
 composer-update:
 	$(RUN_COMMAND) composer update
 
-test:
-	$(RUN_COMMAND) /application/bin/phpunit -c /application/phpunit.xml.dist $(PHPUNIT_FLAGS)
+test-php7.3:
+	$(RUN_TESTS) php:7.3-cli $(PHPUNIT_COMMAND) --no-coverage
+
+test-php7.2:
+	$(RUN_TESTS) php:7.2-cli $(PHPUNIT_COMMAND) --no-coverage
+
+test-php7.1:
+	$(RUN_COMMAND) $(PHPUNIT_COMMAND)
+
+test: test-php7.3 test-php7.2 test-php7.1
 
 coveralls:
 	docker-compose run --rm -e TRAVIS=$(TRAVIS) -e TRAVIS_JOB_ID=$(TRAVIS_JOB_ID) site1.local php /application/bin/php-coveralls -v
