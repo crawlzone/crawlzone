@@ -124,7 +124,7 @@ Middleware 2 Response: https://httpbin.org/ip 200
 
 ```
 
-To skip the request and go to the next from your middleware you can `throw new \Crawlzone\Exception\InvalidRequestException`. 
+To skip the request and go to the next middleware you can `throw new \Crawlzone\Exception\InvalidRequestException` from any middleware. 
 The scheduler will catch the exception, notify all subscribers, and ignore the request.  
 
 ## Processing server errors
