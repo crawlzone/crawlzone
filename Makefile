@@ -4,7 +4,7 @@ RUN_COMMAND=docker-compose run --rm site1.local
 
 RUN_TESTS=docker run --rm --interactive --tty --network crawlzone_default -v `pwd`:/application
 
-PHPUNIT_COMMAND=/application/bin/phpunit -c /application/phpunit.xml.dist $(PHPUNIT_FLAGS)
+PHPUNIT_COMMAND=/application/bin/phpunit -c /application/phpunit.xml.dist --no-coverage $(PHPUNIT_FLAGS)
 
 PHPUNIT_FLAGS=
 
@@ -26,7 +26,10 @@ up:
 	docker-compose up -d
 
 ssh:
-	docker exec -it site1-local bash
+	docker-compose exec site1.local bash
+
+npm-install:
+	$(RUN_COMMAND) npm install
 
 composer-istall:
 	$(RUN_COMMAND) composer install

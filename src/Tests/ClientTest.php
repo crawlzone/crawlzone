@@ -2,6 +2,12 @@
 
 namespace Crawlzone\Tests;
 
+use Crawlzone\Event\RequestFailed;
+use Crawlzone\Event\ResponseHeadersReceived;
+use Crawlzone\Event\ResponseReceived;
+use Crawlzone\Event\TransferStatisticReceived;
+use Crawlzone\Extension\Extension;
+use Crawlzone\Handler\PuppeteerHandler;
 use PHPUnit\Framework\TestCase;
 use Crawlzone\Client;
 use Crawlzone\Tests\Middleware\LogMiddleware;
@@ -47,7 +53,6 @@ class ClientTest extends TestCase
             ]
         ];
         $client = new Client($config);
-
         $history = new HistoryMiddleware;
         $client->addRequestMiddleware($history);
         $client->run();
@@ -103,7 +108,6 @@ class ClientTest extends TestCase
             ]
         ];
         $client = new Client($config);
-
         $history = new HistoryMiddleware;
         $client->addRequestMiddleware($history);
         $client->run();
@@ -128,7 +132,6 @@ class ClientTest extends TestCase
 
         ];
         $client = new Client($config);
-
         $history = new HistoryMiddleware;
         $client->addRequestMiddleware($history);
 
@@ -154,7 +157,6 @@ class ClientTest extends TestCase
             'concurrency' => 4
         ];
         $client = new Client($config);
-
         $history = new HistoryMiddleware;
         $client->addRequestMiddleware($history);
 
@@ -342,9 +344,7 @@ class ClientTest extends TestCase
     public function testRedirectsAndUriResolver()
     {
         $client = $this->getClient('http://site1.local/redirect/');
-
         $log = new LogMiddleware;
-
         $client->addResponseMiddleware($log);
 
         $client->run();
@@ -366,7 +366,6 @@ class ClientTest extends TestCase
             'depth' => 2
         ];
         $log = new LogMiddleware;
-
         $client = new Client($config);
         $client->addResponseMiddleware($log);
 
@@ -380,5 +379,65 @@ class ClientTest extends TestCase
 
         $this->assertEquals($expected, $log->getLog());
 
+    }
+
+    public function testCrawlingJavascriptPages()
+    {
+        $config = [
+            'start_uri' => ['http://site1.local/javascript/'],
+            'request_options' => [
+                'debug' => true,
+            ]
+        ];
+
+        $log = new LogMiddleware;
+        $client = new Client($config);
+        $client->setHandler(new PuppeteerHandler);
+        $client->addResponseMiddleware($log);
+
+        // This extention demostrates the order in which events get dispatched
+        $client->addExtension(new class() extends Extension {
+            public function responseHeadersReceived(ResponseHeadersReceived $event)
+            {
+                echo "ResponseHeadersReceived: " . $event->getResponse()->getStatusCode() . PHP_EOL;
+            }
+
+            public function transferStatisticReceived(TransferStatisticReceived $event)
+            {
+                echo "TransferStatisticReceived: " . $event->getTransferStats()->getRequest()->getUri() . PHP_EOL;
+            }
+
+            public function responseReceived(ResponseReceived $event)
+            {
+                echo "ResponseReceived: " . $event->getResponse()->getStatusCode() . PHP_EOL;
+            }
+
+            public function requestFailed(RequestFailed $event)
+            {
+                echo "RequestFailed: " . $event->getRequest()->getUri() . PHP_EOL;
+                echo $event->getReason()->getMessage() . "\n";
+            }
+
+            /**
+             * @inheritdoc
+             */
+            public static function getSubscribedEvents(): array
+            {
+                return [
+                    ResponseHeadersReceived::class => 'responseHeadersReceived',
+                    TransferStatisticReceived::class => 'transferStatisticReceived',
+                    ResponseReceived::class => 'responseReceived',
+                    RequestFailed::class => 'requestFailed',
+                ];
+            }
+        });
+
+        $client->run();
+
+        $expected = [
+            'Process Response: http://site1.local/javascript/ status:200',
+        ];
+
+        $this->assertEquals($expected, $log->getLog());
     }
 }

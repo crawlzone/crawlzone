@@ -2,7 +2,9 @@ version: '2'
 
 services:
   site1.local:
-    image: webdevops/php-apache-dev:7.1
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8880:80"
     volumes:
