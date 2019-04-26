@@ -26,8 +26,8 @@ class ClientTest extends TestCase
 
         $history = new HistoryMiddleware;
         $client->addRequestMiddleware($history);
-        $client->run();
 
+        $client->run();
 
         $expected = [
             'GET http://site1.local/',
@@ -381,6 +381,9 @@ class ClientTest extends TestCase
 
     }
 
+    /**
+     * @group javascript
+     */
     public function testCrawlingJavascriptPages()
     {
         $config = [
@@ -395,47 +398,11 @@ class ClientTest extends TestCase
         $client->setHandler(new PuppeteerHandler);
         $client->addResponseMiddleware($log);
 
-        // This extention demostrates the order in which events get dispatched
-        $client->addExtension(new class() extends Extension {
-            public function responseHeadersReceived(ResponseHeadersReceived $event)
-            {
-                echo "ResponseHeadersReceived: " . $event->getResponse()->getStatusCode() . PHP_EOL;
-            }
-
-            public function transferStatisticReceived(TransferStatisticReceived $event)
-            {
-                echo "TransferStatisticReceived: " . $event->getTransferStats()->getRequest()->getUri() . PHP_EOL;
-            }
-
-            public function responseReceived(ResponseReceived $event)
-            {
-                echo "ResponseReceived: " . $event->getResponse()->getStatusCode() . PHP_EOL;
-            }
-
-            public function requestFailed(RequestFailed $event)
-            {
-                echo "RequestFailed: " . $event->getRequest()->getUri() . PHP_EOL;
-                echo $event->getReason()->getMessage() . "\n";
-            }
-
-            /**
-             * @inheritdoc
-             */
-            public static function getSubscribedEvents(): array
-            {
-                return [
-                    ResponseHeadersReceived::class => 'responseHeadersReceived',
-                    TransferStatisticReceived::class => 'transferStatisticReceived',
-                    ResponseReceived::class => 'responseReceived',
-                    RequestFailed::class => 'requestFailed',
-                ];
-            }
-        });
-
         $client->run();
 
         $expected = [
             'Process Response: http://site1.local/javascript/ status:200',
+            'Process Response: http://site1.local/javascript/javascript-page.html status:200',
         ];
 
         $this->assertEquals($expected, $log->getLog());

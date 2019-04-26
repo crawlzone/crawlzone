@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    command: php -S 0.0.0.0:80 -t /app/
     ports:
       - "8880:80"
     volumes:
@@ -13,7 +14,8 @@ services:
     working_dir: /application
 
   site2.local:
-    image: webdevops/php-apache-dev:7.1
+    image: php:7.1-cli
+    command: php -S 0.0.0.0:80 -t /app/
     ports:
       - "8881:80"
     volumes:

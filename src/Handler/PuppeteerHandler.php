@@ -32,7 +32,7 @@ class PuppeteerHandler implements Handler
                 if($process->isRunning()) {
                     continue;
                 }
-
+                //todo: use getIncrementalOutput()
                 if ($process->isSuccessful()) {
                     $content = $process->getOutput();
                     $response = new Response();
@@ -48,7 +48,6 @@ class PuppeteerHandler implements Handler
                 unset($this->promises[$pid]);
 
             }
-
             usleep(1000);
         }
     }
@@ -64,9 +63,10 @@ class PuppeteerHandler implements Handler
             'uri' => (string) $request->getUri()
         ]);
 
-
+        //@todo: check if node can be run, throw exception otherwise
+        //@todo: check if the puppeteer library is installed
         $cmd = "node " . __DIR__ . "/../browser.js " . escapeshellarg($arguments);
-        echo $cmd;
+
         $process = new Process($cmd);
 
         $pid = spl_object_hash($process);
