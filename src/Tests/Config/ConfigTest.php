@@ -2,6 +2,7 @@
 
 namespace Crawlzone\Tests\Config;
 
+use GuzzleHttp\Cookie\CookieJar;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Crawlzone\Config\Config;
 use PHPUnit\Framework\TestCase;
@@ -20,7 +21,6 @@ class ConfigTest extends TestCase
             'save_progress_in' => 'memory',
             'request_options' => [
                 'verify' => true,
-                'cookies' => true,
                 'allow_redirects' => false,
                 'debug' => false,
             ],
@@ -65,6 +65,8 @@ class ConfigTest extends TestCase
 
     public function testFullConfig()
     {
+        $cookieJar = CookieJar::fromArray(['name' => 'test', 'value' => 'test-value'],'localhost');
+
         $config = Config::fromArray([
             'start_uri' => ['http://test.com'],
             'concurrency' => 10,
@@ -79,7 +81,7 @@ class ConfigTest extends TestCase
             ],
             'request_options' => [
                 'verify' => false,
-                'cookies' => true,
+                'cookies' => $cookieJar,
                 'allow_redirects' => false,
                 'debug' => true,
                 'connect_timeout' => 0,
@@ -118,7 +120,7 @@ class ConfigTest extends TestCase
             ],
             'request_options' => [
                 'verify' => false,
-                'cookies' => true,
+                'cookies' => $cookieJar,
                 'allow_redirects' => false,
                 'debug' => true,
                 'connect_timeout' => 0,
