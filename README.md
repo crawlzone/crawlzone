@@ -353,7 +353,7 @@ $fullConfig = [
         'verify' => false,
         
         // Specifies whether or not cookies are used in a request or what cookie jar to use or what cookies to send.
-        'cookies' => true,
+        'cookies' => CookieJar::fromArray(['name' => 'test', 'value' => 'test-value'],'localhost'),
         
         // Describes the redirect behavior of a request.
         'allow_redirects' => false,
