@@ -9,9 +9,13 @@ use GuzzleHttp\Promise\Promise;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Promise\RejectedPromise;
 use GuzzleHttp\Psr7\Response;
+use function GuzzleHttp\Psr7\stream_for;
 use Psr\Http\Message\RequestInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Serializer\Encoder\JsonDecode;
+use Symfony\Component\Serializer\Encoder\JsonEncode;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
 class PuppeteerHandler implements Handler
 {
@@ -37,10 +41,13 @@ class PuppeteerHandler implements Handler
                 }
                 //todo: use getIncrementalOutput()
                 if ($process->isSuccessful()) {
-                    $content = $process->getOutput();
-                    $response = new Response();
-                    $response = $response->withBody(\GuzzleHttp\Psr7\stream_for($content));
+                    $output = $process->getOutput();
 
+                    $output = (new JsonDecode)->decode($output, JsonEncoder::FORMAT);
+
+                    $response = new Response();
+                    //@todo: Populate headers
+                    $response = $response->withBody(stream_for($output->response->content));
 
                     $this->promises[$pid]->resolve($response);
                 } else {
@@ -62,9 +69,13 @@ class PuppeteerHandler implements Handler
      */
     public function __invoke(RequestInterface $request, array $options): PromiseInterface
     {
-        $arguments = json_encode([
-            'uri' => (string) $request->getUri()
-        ]);
+        $arguments = (new JsonEncode)->encode([
+            'uri' => (string) $request->getUri(),
+            'options' => [
+                'screenshots' => '/application/build/screenshots'
+            ]
+        ], JsonEncoder::FORMAT);
+
 
         $this->guardNodeJsInstallation();
 

@@ -398,6 +398,20 @@ class ClientTest extends TestCase
         $client->setHandler(new PuppeteerHandler);
         $client->addResponseMiddleware($log);
 
+        $client->addExtension(new class() extends Extension {
+            public function requestFailed(RequestFailed $event)
+            {
+                echo $event->getReason()->getMessage() . PHP_EOL . $event->getReason()->getTraceAsString();
+            }
+
+            public static function getSubscribedEvents(): array
+            {
+                return [
+                    RequestFailed::class => 'requestFailed',
+                ];
+            }
+        });
+
         $client->run();
 
         $expected = [

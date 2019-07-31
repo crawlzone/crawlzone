@@ -1,28 +1,27 @@
-const puppeteer = require('puppeteer');
+const PuppeteerApiClient = require(__dirname + '/PuppeteerApiClient');
 
-const request = JSON.parse(process.argv[2]);
+const options = JSON.parse(process.argv[2]);
 
+function guardOptions(options)
+{
+  if(options.uri === undefined) {
+    throw new Error('Options must have URI.');
+  }
+}
 
-// todo: Get headers
 // todo: Get transfer stats
-// todo: wrap response into JSON
 // todo: pass puppeteer launch options from the JSON command
-(async () => {
-  const browser = await puppeteer.launch(
-    {
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        // debug logging
-        '--enable-logging', '--v=1'
-      ]
-    }
-  );
-  const page = await browser.newPage();
-  await page.goto(request.uri);
-  console.log(request.uri);
-  let content = await page.content();
-  console.log(content);
+// node src/browser.js '{"uri":"http:\/\/localhost:8880\/javascript\/"}'
+// node src/browser.js '{"uri":"http:\/\/localhost:8880\/javascript\/","options":{"screenshots":"\/application\/build\/screenshots"}}'
 
-  await browser.close();
+(async () => {
+
+  guardOptions(options);
+
+  let client = new PuppeteerApiClient(options);
+
+  let result = await client.processRequest(options.uri);
+
+  console.log(JSON.stringify(result));
+
 })();
