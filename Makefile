@@ -31,6 +31,9 @@ ssh:
 npm-install:
 	$(RUN_COMMAND) npm install
 
+yarn-install:
+	$(RUN_COMMAND) yarn install
+
 composer-istall:
 	$(RUN_COMMAND) composer install
 
@@ -46,7 +49,7 @@ test-php7.2:
 test-php7.3-javascript:
 	$(RUN_COMMAND) $(PHPUNIT_COMMAND)
 
-test: test-php7.3-javascript test-php7.2 test-php7.1
+test: test-php7.3-javascript test-php7.2 test-php7.1 run-javascript-test
 
 coveralls:
 	docker-compose run --rm -e TRAVIS=$(TRAVIS) -e TRAVIS_JOB_ID=$(TRAVIS_JOB_ID) site1.local php /application/bin/php-coveralls -v
@@ -56,6 +59,9 @@ run-script:
 	docker exec -it \
 	site1-local \
 	php /application/$(script)
+
+run-javascript-test:
+	$(RUN_COMMAND) node src/Tests/puppeteer/puppeter-test.js
 
 site1:
 	open -a "Firefox" http://localhost:8880/
