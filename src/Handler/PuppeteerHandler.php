@@ -11,9 +11,7 @@ use GuzzleHttp\Promise\RejectedPromise;
 use GuzzleHttp\Psr7\Response;
 use function GuzzleHttp\Psr7\stream_for;
 use Psr\Http\Message\RequestInterface;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Serializer\Encoder\JsonDecode;
 use Symfony\Component\Serializer\Encoder\JsonEncode;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
@@ -26,6 +24,8 @@ class PuppeteerHandler implements Handler
     private $processes;
 
     private $isNodeInstalled;
+
+    private $isPuppeteerInstalled;
 
     /**
      * @return void
@@ -43,11 +43,13 @@ class PuppeteerHandler implements Handler
                 if ($process->isSuccessful()) {
                     $output = $process->getOutput();
 
-                    $output = (new JsonDecode)->decode($output, JsonEncoder::FORMAT);
+                    $puppeteerResponse = PuppeteerResponse::fromJson($output);
 
-                    $response = new Response();
-                    //@todo: Populate headers
-                    $response = $response->withBody(stream_for($output->response->content));
+                    $response = new Response(
+                        $puppeteerResponse->getStatus(),
+                        $puppeteerResponse->getHeaders(),
+                        stream_for($puppeteerResponse->getContent())
+                    );
 
                     $this->promises[$pid]->resolve($response);
                 } else {
@@ -79,7 +81,8 @@ class PuppeteerHandler implements Handler
 
         $this->guardNodeJsInstallation();
 
-        //@todo: check if the puppeteer library is installed
+        $this->guardPuppeteerInstallation();
+
         $cmd = "node " . __DIR__ . "/../browser.js " . escapeshellarg($arguments);
 
         $process = Process::fromShellCommandline($cmd);
@@ -109,6 +112,24 @@ class PuppeteerHandler implements Handler
         }
 
         $this->isNodeInstalled = true;
+
+        return;
+    }
+
+    private function guardPuppeteerInstallation(): void
+    {
+        if($this->isPuppeteerInstalled) {
+            return;
+        }
+
+        $process = Process::fromShellCommandline("npm list puppeteer");
+        $process->run();
+
+        if(! $process->isSuccessful()) {
+            throw new \RuntimeException("Please install Puppeteer - `npm i puppeteer`");
+        }
+
+        $this->isPuppeteerInstalled = true;
 
         return;
     }
