@@ -16,9 +16,15 @@ wget https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_
 RUN apt -y install lsb-release apt-transport-https ca-certificates && \
     wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg && \
     echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php7.3.list && \
-    apt update && apt -y install php7.3-common php7.3-xml php7.3-sqlite3 php7.3-cli php7.3-curl
+    apt update && apt -y install php7.3-common php7.3-xml php7.3-sqlite3 php7.3-cli php7.3-curl php7.3-mbstring
 
+### Install composer
 
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+    php -r "if (hash_file('sha384', 'composer-setup.php') === 'a5c698ffe4b8e849a443b120cd5ba38043260d5c4023dbf93e1558871f1f07f58274fc6f4c93bcfd858c6bd0775cd8d1') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
+    php composer-setup.php && \
+    php -r "unlink('composer-setup.php');" && \
+    mv /composer.phar /usr/local/bin/composer
 
 # Clean up
 # RUN rm -f dumb-init_*.deb && apt-get clean && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
