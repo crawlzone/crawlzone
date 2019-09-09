@@ -1,0 +1,12 @@
+{
+  "name": "crawlzone",
+  "description": "Crawlzone is a fast asynchronous internet crawling framework aiming to provide open source web search and testing solution. It can be used for a wide range of purposes, from extracting and indexing structured data to monitoring and automated testing.",
+  "homepage": "https://github.com/crawlzone/crawlzone",
+  "author": "Egor Zubkevich <zstate@gmail.com>",
+  "dependencies": {
+    "puppeteer": "^1.12.2"
+  },
+  "devDependencies": {
+    "@pptr/testrunner": "^0.5.0"
+  }
+}

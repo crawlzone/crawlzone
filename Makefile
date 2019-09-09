@@ -28,9 +28,6 @@ up:
 ssh:
 	docker-compose exec site1.local bash
 
-npm-install:
-	$(RUN_COMMAND) npm install
-
 yarn-install:
 	$(RUN_COMMAND) yarn install
 
