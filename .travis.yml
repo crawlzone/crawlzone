@@ -4,7 +4,7 @@ services:
   - docker
 
 script:
-  - make up composer-istall yarn-install test
+  - make up yarn-install composer-istall test
 
 after_success:
   - make coveralls
