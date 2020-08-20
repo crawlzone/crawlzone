@@ -13,15 +13,15 @@
         }
     ],
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.2",
         "guzzlehttp/guzzle": "^6.0",
-        "symfony/console": "^4.0",
-        "symfony/config": "^4.0",
-        "symfony/dom-crawler": "^4.0",
+        "symfony/console": "^5.0",
+        "symfony/config": "^5.0",
+        "symfony/dom-crawler": "^5.0",
         "psr/log": "^1.0",
-        "symfony/event-dispatcher": "^4.0",
+        "symfony/event-dispatcher": "^5.0",
         "webignition/robots-txt-file": "^2.1",
-        "symfony/yaml": "^4.0",
+        "symfony/yaml": "^5.0",
         "symfony/process": "^4.1"
     },
 

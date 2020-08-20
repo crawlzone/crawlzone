@@ -53,11 +53,7 @@ class StartCommand extends Command
         ;
     }
 
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $configPath = $input->getOption('config') ?? "./crawler.yml";
 
@@ -76,6 +72,8 @@ class StartCommand extends Command
         $client->addExtension(new ConsoleLogging(new ConsoleLogger($output, $verbosityLevelMap)));
 
         $client->run();
+
+        return 0;
     }
 
     /**

@@ -210,11 +210,11 @@ class Client
         $config['handler'] = $this->getHandlerStack();
 
         $config['on_stats'] = function (TransferStats $stats) {
-            $this->getDispatcher()->dispatch(TransferStatisticReceived::class, new TransferStatisticReceived($stats));
+            $this->getDispatcher()->dispatch(new TransferStatisticReceived($stats));
         };
 
         $config['on_headers'] = function (ResponseInterface $response) {
-            $this->getDispatcher()->dispatch(ResponseHeadersReceived::class, new ResponseHeadersReceived($response));
+            $this->getDispatcher()->dispatch(new ResponseHeadersReceived($response));
         };
 
         $this->httpClient = new GuzzleHttpClient(new \GuzzleHttp\Client($config));
@@ -340,7 +340,7 @@ class Client
     {
         $config = $this->getConfig();
 
-        $this->getDispatcher()->dispatch(BeforeEngineStarted::class, new BeforeEngineStarted);
+        $this->getDispatcher()->dispatch(new BeforeEngineStarted);
 
         $queue = $this->getQueue();
 

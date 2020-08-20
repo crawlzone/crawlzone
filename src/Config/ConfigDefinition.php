@@ -19,8 +19,8 @@ class ConfigDefinition implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $node = $treeBuilder->root('crawler');
+        $treeBuilder = new TreeBuilder('crawler');
+        $node = $treeBuilder->getRootNode();
 
         $node->children()
             ->scalarNode('start_uri')
@@ -57,8 +57,8 @@ class ConfigDefinition implements ConfigurationInterface
      */
     private function autoThrottle(): NodeDefinition
     {
-        $builder = new TreeBuilder();
-        $node = $builder->root('autothrottle');
+        $builder = new TreeBuilder('autothrottle');
+        $node = $builder->getRootNode();
 
         $node
             ->addDefaultsIfNotSet()
@@ -85,8 +85,8 @@ class ConfigDefinition implements ConfigurationInterface
      */
     private function filterOptions(): NodeDefinition
     {
-        $builder = new TreeBuilder();
-        $node = $builder->root('filter');
+        $builder = new TreeBuilder('filter');
+        $node = $builder->getRootNode();
 
         $node
             ->addDefaultsIfNotSet()
@@ -125,8 +125,8 @@ class ConfigDefinition implements ConfigurationInterface
      */
     private function requestOptions(): NodeDefinition
     {
-        $builder = new TreeBuilder();
-        $node = $builder->root('request_options');
+        $builder = new TreeBuilder('request_options');
+        $node = $builder->getRootNode();
 
         $node
             ->addDefaultsIfNotSet()

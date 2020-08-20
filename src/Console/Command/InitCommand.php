@@ -46,7 +46,7 @@ class InitCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $path = './crawler.yml';
 
@@ -55,6 +55,8 @@ class InitCommand extends Command
         $path = realpath($path);
 
         $output->writeln("<info>Created config file: " . $path . "</info>");
+
+        return 0;
     }
 
     /**

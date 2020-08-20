@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Crawlzone\Event;
 
 use GuzzleHttp\TransferStats;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @package Crawlzone\Event

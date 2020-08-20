@@ -2,8 +2,8 @@
 
 namespace Crawlzone\Event;
 
-use Symfony\Component\EventDispatcher\Event;
-use Crawlzone\Config\Config;
+
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @package Crawlzone\Event

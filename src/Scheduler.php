@@ -90,7 +90,7 @@ class Scheduler
 
     public function __destruct()
     {
-        $this->eventDispatcher->dispatch(AfterEngineStopped::class, new AfterEngineStopped);
+        $this->eventDispatcher->dispatch(new AfterEngineStopped);
     }
 
     public function run(): void
@@ -159,7 +159,7 @@ class Scheduler
 
         try {
 
-            $this->eventDispatcher->dispatch(BeforeRequestSent::class, new BeforeRequestSent($request));
+            $this->eventDispatcher->dispatch(new BeforeRequestSent($request));
 
             $idx = RequestFingerprint::calculate($request);
 
@@ -168,7 +168,7 @@ class Scheduler
 
             $promise = $this->client->sendAsync($request);
 
-            $this->eventDispatcher->dispatch(AfterRequestSent::class, new AfterRequestSent($request));
+            $this->eventDispatcher->dispatch(new AfterRequestSent($request));
 
             $this->pending[$idx] = $promise->then(
                 function (ResponseInterface $response) use ($idx, $request): ResponseInterface {
@@ -177,7 +177,7 @@ class Scheduler
                     /** @var ResponseInterface $response */
                     $response = $this->middlewareStack->getResponseMiddlewareStack()($response, $request);
 
-                    $this->eventDispatcher->dispatch(ResponseReceived::class, new ResponseReceived($response, $request));
+                    $this->eventDispatcher->dispatch(new ResponseReceived($response, $request));
 
                     // Response with 4xx and 5xx statuses
                     if ($response->getStatusCode() >= 400) {
@@ -190,7 +190,7 @@ class Scheduler
                 }
             )->otherwise(
                 function (Exception $reason) use ($idx, $request) {
-                    $this->eventDispatcher->dispatch(RequestFailed::class, new RequestFailed($reason, $request));
+                    $this->eventDispatcher->dispatch(new RequestFailed($reason, $request));
                     $this->step($idx);
                 }
             );
@@ -200,7 +200,7 @@ class Scheduler
 
             return true;
         } catch (InvalidRequestException $e) {
-            $this->eventDispatcher->dispatch(RequestFailed::class, new RequestFailed($e, $request));
+            $this->eventDispatcher->dispatch(new RequestFailed($e, $request));
             // Skipping the request if it is invalid (For example, if the request is not allowed by robots.txt rule)
             return false;
         }
