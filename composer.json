@@ -22,7 +22,7 @@
         "symfony/event-dispatcher": "^5.0",
         "webignition/robots-txt-file": "^2.1",
         "symfony/yaml": "^5.0",
-        "symfony/process": "^4.1"
+        "symfony/process": "^5.0"
     },
 
     "require-dev": {
