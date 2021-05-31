@@ -3,7 +3,7 @@
 
 # Overview
 
-Crawlzone is a fast asynchronous internet crawling framework aiming to provide open source web scraping and testing solution. It can be used for a wide range of purposes, from extracting and indexing structured data to monitoring and automated testing. Available for PHP 7.2, 7.3, 7.4.
+Crawlzone is a fast asynchronous internet crawling framework aiming to provide open source web scraping and testing solution. It can be used for a wide range of purposes, from extracting and indexing structured data to monitoring and automated testing. Available for PHP 7.3, 7.4, 8.0.
 
 ## Installation
 
