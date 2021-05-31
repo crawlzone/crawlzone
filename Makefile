@@ -1,4 +1,4 @@
-.PHONY: down build up ssh composer-istall composer-update test-php7.3 test-php7.2 test-php7.1 test coveralls run-script site1 site2
+.PHONY: down build up ssh composer-install composer-update test-php7.3 test-php7.2 test-php7.1 test coveralls run-script site1 site2
 
 RUN_COMMAND=docker-compose run --rm site1.local
 
@@ -28,11 +28,14 @@ up:
 ssh:
 	docker exec -it site1-local bash
 
-composer-istall:
+composer-install:
 	$(RUN_COMMAND) composer install
 
 composer-update:
 	$(RUN_COMMAND) composer update
+
+test-php8.0:
+	$(RUN_TESTS) php:8.0-cli $(PHPUNIT_COMMAND) --no-coverage
 
 test-php7.4:
 	$(RUN_TESTS) php:7.4-cli $(PHPUNIT_COMMAND) --no-coverage
@@ -40,10 +43,7 @@ test-php7.4:
 test-php7.3:
 	$(RUN_TESTS) php:7.3-cli $(PHPUNIT_COMMAND) --no-coverage
 
-test-php7.2:
-	$(RUN_COMMAND) $(PHPUNIT_COMMAND)
-
-test: test-php7.4 test-php7.3 test-php7.2
+test: test-php8.0 test-php7.4 test-php7.3
 
 coveralls:
 	docker-compose run --rm -e TRAVIS=$(TRAVIS) -e TRAVIS_JOB_ID=$(TRAVIS_JOB_ID) site1.local php /application/bin/php-coveralls -v

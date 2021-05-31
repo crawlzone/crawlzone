@@ -13,7 +13,7 @@ class QueueTest extends TestCase
 {
     private $adapter;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -22,7 +22,7 @@ class QueueTest extends TestCase
         $storageService->importFile(__DIR__ . '/../../Storage/Schema/main.sql');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->adapter = null;
 

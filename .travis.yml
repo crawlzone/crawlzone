@@ -4,7 +4,7 @@ services:
   - docker
 
 script:
-  - make up composer-istall test
+  - make up composer-install test
 
 after_success:
   - make coveralls

@@ -26,12 +26,12 @@ class StartCommandTest extends TestCase
         // the output of the command in the console
         $output = $commandTester->getDisplay();
 
-        $this->assertContains("[info] GET http://site1.local/page-with-link-to-500-error.html 200", $output);
-        $this->assertContains("[info] GET http://site1.local 200", $output);
-        $this->assertContains("[error] GET http://site1.local/500-error.php 500", $output);
-        $this->assertContains("[info] GET http://site1.local/customers.html 200", $output);
-        $this->assertContains("[info] GET http://site2.local 200", $output);
-        $this->assertContains("[info] GET http://site2.local/service.html 200", $output);
-        $this->assertContains("[info] GET http://site2.local/contacts.html 200", $output);
+        $this->assertStringContainsString("[info] GET http://site1.local/page-with-link-to-500-error.html 200", $output);
+        $this->assertStringContainsString("[info] GET http://site1.local 200", $output);
+        $this->assertStringContainsString("[error] GET http://site1.local/500-error.php 500", $output);
+        $this->assertStringContainsString("[info] GET http://site1.local/customers.html 200", $output);
+        $this->assertStringContainsString("[info] GET http://site2.local 200", $output);
+        $this->assertStringContainsString("[info] GET http://site2.local/service.html 200", $output);
+        $this->assertStringContainsString("[info] GET http://site2.local/contacts.html 200", $output);
     }
 }

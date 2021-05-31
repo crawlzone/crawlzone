@@ -13,8 +13,8 @@ class FileSystemTest extends TestCase
 
         $content = $fileSystem->fileGetContent(__DIR__ . "/../data/site1.local/web/robots.txt");
 
-        $this->assertContains("User-agent: *", $content);
-        $this->assertContains("Disallow: /", $content);
+        $this->assertStringContainsString("User-agent: *", $content);
+        $this->assertStringContainsString("Disallow: /", $content);
     }
 
     public function testFileGetContentException()
@@ -36,7 +36,7 @@ class FileSystemTest extends TestCase
 
         $content = $fileSystem->fileGetContent($file);
 
-        $this->assertContains("test", $content);
+        $this->assertStringContainsString("test", $content);
 
         //Cleanup
         unlink($file);

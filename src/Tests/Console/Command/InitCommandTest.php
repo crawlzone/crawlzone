@@ -72,6 +72,6 @@ YML;
         $output = $commandTester->getDisplay();
 
         // Cleanup
-        $this->assertContains('Created config file:', $output);
+        $this->assertStringContainsString('Created config file:', $output);
     }
 }
