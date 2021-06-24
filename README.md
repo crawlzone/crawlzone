@@ -409,10 +409,6 @@ $fullConfig = [
 ];
 
 ```
-## Migration 
-
-The repo was migrated from https://github.com/zstate/crawler
-
 
 ## Thanks for Inspiration
 
