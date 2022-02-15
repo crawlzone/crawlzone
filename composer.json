@@ -13,14 +13,14 @@
         }
     ],
     "require": {
-        "php": ">=7.3",
-        "guzzlehttp/guzzle": "^6.5",
+        "php": ">=7.4",
+        "guzzlehttp/guzzle": "^7.4",
         "symfony/console": "^5.1",
         "symfony/config": "^5.1",
         "symfony/dom-crawler": "^5.1",
         "psr/log": "^1.0",
         "symfony/event-dispatcher": "^5.1",
-        "webignition/robots-txt-file": "^2.1",
+        "webignition/robots-txt-file": "^3.0",
         "symfony/yaml": "^5.1",
         "symfony/process": "^5.1"
     },
